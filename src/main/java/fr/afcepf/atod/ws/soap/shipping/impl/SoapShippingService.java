@@ -13,7 +13,7 @@ public class SoapShippingService implements ISoapShippingService {
 
 	@Override
 	public void orderShipping(Map<String, String> detailsOrder) {
-		RESTUtil.goToShippingApp();
+		RESTUtil.postToShippingApp(detailsOrder);
 	}
 
 	@Override

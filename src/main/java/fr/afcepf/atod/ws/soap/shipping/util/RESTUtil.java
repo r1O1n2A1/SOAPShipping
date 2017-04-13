@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.ws.rs.ClientErrorException;
 
@@ -19,7 +20,7 @@ import org.apache.log4j.Logger;
 
 public final class  RESTUtil {
 	private static Logger logger = Logger.getLogger(RESTUtil.class);
-	
+
 	private RESTUtil() {
 		//empty on
 	}
@@ -36,15 +37,15 @@ public final class  RESTUtil {
 		String returnStatusShipping = "";
 		CloseableHttpClient httpClient = HttpClientBuilder.create().build();
 		String paramsToStr = createStringFromOrderDetails(infos);
-//		HttpPost post = new HttpPost(ConstantUtiles.URI_SHIPPING_SITE_FROM_WINE);
+		//		HttpPost post = new HttpPost(ConstantUtiles.URI_SHIPPING_SITE_FROM_WINE);
 		HttpGet get = new HttpGet(ConstantUtiles.URI_SHIPPING_SITE_FROM_WINE + paramsToStr);
-		
+
 		try {
-//			StringEntity params = new StringEntity(paramsToStr);
-//			post.addHeader("content-type","application/json");
-//			post.setEntity(params);
+			//			StringEntity params = new StringEntity(paramsToStr);
+			//			post.addHeader("content-type","application/json");
+			//			post.setEntity(params);
 			get.addHeader("content-type","application/json");
-//			HttpResponse response = httpClient.execute(post);
+			//			HttpResponse response = httpClient.execute(post);
 			HttpResponse response = httpClient.execute(get);
 
 			if (response.getStatusLine().getStatusCode() < 200 
@@ -65,7 +66,7 @@ public final class  RESTUtil {
 			br.close();
 		} catch (UnsupportedEncodingException | ClientProtocolException e) {
 			logger.info(e);
-		
+
 		} catch (IOException e) {
 			logger.error(e);
 		}
@@ -74,10 +75,17 @@ public final class  RESTUtil {
 	}
 
 	private static String createStringFromOrderDetails(Map<String, String> infos) {
-		String strOrderDetails = "coucoutoi";
-//		for (String str : infos.keySet()) {
-//			strOrderDetails = str + "|";
-//		}
-		return strOrderDetails;
+		StringBuilder strOrderDetails = new StringBuilder();
+		strOrderDetails.append(ConstantUtiles.EMPTY_STR);
+		if (infos != null) {
+			for (Entry<String, String> str: infos.entrySet()) {
+					strOrderDetails.append("_" + str.getKey() + ConstantUtiles.POINT_STR +str.getValue());
+			}
+		} else {
+			strOrderDetails.append("emptyURL");
+		}
+		String retour = strOrderDetails.toString().replace("|", "&");
+		return retour.replace(ConstantUtiles.SPACE_STR, ConstantUtiles.DOLLAR_STR);
+				
 	}
 }

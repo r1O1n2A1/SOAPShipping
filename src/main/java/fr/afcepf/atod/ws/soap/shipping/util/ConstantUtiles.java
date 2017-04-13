@@ -12,8 +12,11 @@ public final class ConstantUtiles {
 	public static final String MAC = "mac";
 	public static final String LINUX = "nix";
 	public static final String UNIX = "nux";
+	public static final String EMPTY_STR = "";
+	public static final String DOLLAR_STR = "$";
+	public static final String SPACE_STR = " ";
+	public static final String POINT_STR = ":";
 	
-
 	private ConstantUtiles() {
 		// empty constructor
 	}
