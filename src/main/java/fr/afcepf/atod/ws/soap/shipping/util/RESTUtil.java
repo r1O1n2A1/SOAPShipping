@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.util.Base64;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -33,12 +34,18 @@ public final class  RESTUtil {
 		}	
 	}
 
+	
+	/**
+	 * CAN BE DONE WITH A PUT ?
+	 * @param infos
+	 * @return
+	 */
 	public static String postToShippingApp(Map<String,String> infos) {
 		String returnStatusShipping = "";
 		CloseableHttpClient httpClient = HttpClientBuilder.create().build();
 		String paramsToStr = createStringFromOrderDetails(infos);
-		//		HttpPost post = new HttpPost(ConstantUtiles.URI_SHIPPING_SITE_FROM_WINE);
-		HttpGet get = new HttpGet(ConstantUtiles.URI_SHIPPING_SITE_FROM_WINE + paramsToStr);
+		String hashUrl = encodingUrlToShippingApp(paramsToStr);
+		HttpGet get = new HttpGet(ConstantUtiles.URI_SHIPPING_SITE_FROM_WINE + hashUrl);
 
 		try {
 			//			StringEntity params = new StringEntity(paramsToStr);
@@ -74,6 +81,11 @@ public final class  RESTUtil {
 
 	}
 
+	/**
+	 * Change infos sent to the Shipping app through REST WS
+	 * @param infos
+	 * @return
+	 */
 	private static String createStringFromOrderDetails(Map<String, String> infos) {
 		StringBuilder strOrderDetails = new StringBuilder();
 		strOrderDetails.append(ConstantUtiles.EMPTY_STR);
@@ -87,5 +99,17 @@ public final class  RESTUtil {
 		String retour = strOrderDetails.toString().replace("|", "&");
 		return retour.replace(ConstantUtiles.SPACE_STR, ConstantUtiles.DOLLAR_STR);
 				
+	}
+	
+	/**
+	 * encode URL for security purpose
+	 * @param encodedTarget
+	 * @return
+	 */
+	private static String encodingUrlToShippingApp(String encodedTarget) {
+		// encode data on your side using BASE64
+		String   strEncoded = Base64.getEncoder().encodeToString(encodedTarget.getBytes());
+		logger.info("encoded value is " + strEncoded );
+		return strEncoded;
 	}
 }
