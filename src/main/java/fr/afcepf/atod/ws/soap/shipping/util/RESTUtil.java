@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 
 import javax.ws.rs.ClientErrorException;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
@@ -17,6 +18,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 
 public final class  RESTUtil {
@@ -48,13 +50,8 @@ public final class  RESTUtil {
 		HttpGet get = new HttpGet(ConstantUtiles.URI_SHIPPING_SITE_FROM_WINE + hashUrl);
 
 		try {
-			//			StringEntity params = new StringEntity(paramsToStr);
-			//			post.addHeader("content-type","application/json");
-			//			post.setEntity(params);
 			get.addHeader("content-type","application/json");
-			//			HttpResponse response = httpClient.execute(post);
 			HttpResponse response = httpClient.execute(get);
-
 			if (response.getStatusLine().getStatusCode() < 200 
 					|| response.getStatusLine().getStatusCode() > 300) {
 				throw new RuntimeException("Failed : HTTP error code : "
@@ -69,6 +66,8 @@ public final class  RESTUtil {
 				logger.info(output);
 			}
 			returnStatusShipping = response.getStatusLine().toString();
+			HttpEntity entity = response.getEntity();
+			String responseString = EntityUtils.toString(entity, "UTF-8");
 			httpClient.close();
 			br.close();
 		} catch (UnsupportedEncodingException | ClientProtocolException e) {

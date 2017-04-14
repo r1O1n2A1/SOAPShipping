@@ -10,10 +10,5 @@ public class ShippingTest {
 	@Test
 	public void testNominal() {
 		service.orderShipping(null);
-	}
-	@Test
-	public void testPostNominal() {
-		RESTUtil.postToShippingApp(null);
-	}
-	
+	}	
 }
