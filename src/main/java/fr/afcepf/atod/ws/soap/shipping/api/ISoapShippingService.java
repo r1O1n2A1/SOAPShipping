@@ -11,7 +11,8 @@ import javax.jws.WebService;
 public interface ISoapShippingService {
 	@WebMethod(operationName="setShipping")
 	@WebResult(name="priceShipping")
-	void orderShipping(@WebParam(name="detailsOrder")Map<String,String> detailsOrder);
+	void orderShipping(@WebParam(name="detailsOrder")Map<String,String> detailsOrder)
+		throws Exception;
 	@WebMethod(operationName="followOrder")
 	@WebResult(name="statusShippingOrder")
 	String followOrderShipping(@WebParam(name="detailOrder")Map<String,String> detailsOrder);

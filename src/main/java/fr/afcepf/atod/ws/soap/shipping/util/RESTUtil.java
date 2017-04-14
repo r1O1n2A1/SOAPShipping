@@ -8,18 +8,13 @@ import java.util.Base64;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.ws.rs.ClientErrorException;
-
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
+
 
 public final class  RESTUtil {
 	private static Logger logger = Logger.getLogger(RESTUtil.class);
@@ -36,14 +31,14 @@ public final class  RESTUtil {
 		}	
 	}
 
-	
+
 	/**
 	 * CAN BE DONE WITH A PUT ?
 	 * @param infos
 	 * @return
 	 */
 	public static String postToShippingApp(Map<String,String> infos) {
-		String returnStatusShipping = "";
+		String returnStatusShipping = ConstantUtiles.EMPTY_STR;
 		CloseableHttpClient httpClient = HttpClientBuilder.create().build();
 		String paramsToStr = createStringFromOrderDetails(infos);
 		String hashUrl = encodingUrlToShippingApp(paramsToStr);
@@ -64,10 +59,11 @@ public final class  RESTUtil {
 			logger.info("Output from Server .... \n");
 			while ((output = br.readLine()) != null) {
 				logger.info(output);
+				if(output.contains(ConstantUtiles.RESPONSE_ID_COMMAND)) {
+					returnStatusShipping = output.split(",")[ConstantUtiles.NUMBER_ONE]
+							.split(ConstantUtiles.POINT_STR)[ConstantUtiles.NUMBER_ONE];
+				}
 			}
-			returnStatusShipping = response.getStatusLine().toString();
-			HttpEntity entity = response.getEntity();
-			String responseString = EntityUtils.toString(entity, "UTF-8");
 			httpClient.close();
 			br.close();
 		} catch (UnsupportedEncodingException | ClientProtocolException e) {
@@ -90,16 +86,16 @@ public final class  RESTUtil {
 		strOrderDetails.append(ConstantUtiles.EMPTY_STR);
 		if (infos != null) {
 			for (Entry<String, String> str: infos.entrySet()) {
-					strOrderDetails.append("_" + str.getKey() + ConstantUtiles.POINT_STR +str.getValue());
+				strOrderDetails.append("_" + str.getKey() + ConstantUtiles.POINT_STR +str.getValue());
 			}
 		} else {
 			strOrderDetails.append("emptyURL");
 		}
 		String retour = strOrderDetails.toString().replace("|", "&");
 		return retour.replace(ConstantUtiles.SPACE_STR, ConstantUtiles.DOLLAR_STR);
-				
+
 	}
-	
+
 	/**
 	 * encode URL for security purpose
 	 * @param encodedTarget
@@ -110,5 +106,38 @@ public final class  RESTUtil {
 		String   strEncoded = Base64.getEncoder().encodeToString(encodedTarget.getBytes());
 		logger.info("encoded value is " + strEncoded );
 		return strEncoded;
+	}
+
+	// open browser from java code according to the OS
+	public static void openUrl(String url) throws IOException {
+		String os = getSystemOS();		
+		if (os.indexOf(ConstantUtiles.WINDOWS) >= 0) {
+			// windows
+			Runtime rt = Runtime.getRuntime();
+			rt.exec( "rundll32 url.dll,FileProtocolHandler " + url);
+		} else if (os.indexOf(ConstantUtiles.MAC) >= 0){
+			// mac
+			Runtime rt = Runtime.getRuntime();
+			rt.exec( "open" + url);
+		} else if (os.indexOf(ConstantUtiles.LINUX) >= 0 || 
+				os.indexOf(ConstantUtiles.UNIX) >=0 ){
+			// linux
+			Runtime rt = Runtime.getRuntime();
+			String[] browsers = {"epiphany", "konqueror",
+					"netscape","opera","links","lynx","chromium-browser",
+					"firefox", "mozilla",};
+
+			StringBuffer cmd = new StringBuffer();
+			for (int i=0; i<browsers.length; i++)
+				cmd.append( (i==0  ? "" : " || " ) + browsers[i] +" \"" + url + "\" ");
+
+			rt.exec(new String[] { "sh", "-c", cmd.toString() });
+		} else {
+			return;
+		}
+	}
+
+	public static String getSystemOS() {
+		return System.getProperty("os.name").toLowerCase();
 	}
 }

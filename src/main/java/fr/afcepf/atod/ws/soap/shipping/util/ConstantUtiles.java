@@ -16,6 +16,9 @@ public final class ConstantUtiles {
 	public static final String DOLLAR_STR = "$";
 	public static final String SPACE_STR = " ";
 	public static final String POINT_STR = ":";
+	public static final String RESPONSE_ID_COMMAND = "id: ";
+	public static final int NUMBER_ONE = 1;
+	
 	
 	private ConstantUtiles() {
 		// empty constructor
