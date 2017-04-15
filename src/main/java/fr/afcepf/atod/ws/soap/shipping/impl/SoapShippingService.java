@@ -20,12 +20,13 @@ public class SoapShippingService implements ISoapShippingService {
 		String returnUrl = RESTUtil.postToShippingApp(detailsOrder);
 		if (!returnUrl.equalsIgnoreCase(ConstantUtiles.EMPTY_STR)) {
 			try {
-				RESTUtil.openUrl(ConstantUtiles.URI_SHIPPING_SITE + returnUrl);
+				RESTUtil.openUrl(ConstantUtiles.URI_SHIPPING_SITE + 
+						returnUrl.replace(ConstantUtiles.SPACE_STR, ConstantUtiles.EMPTY_STR));
 			} catch (IOException e) {
 				logger.error(e);
 			}
 		} else {
-			throw new Exception("shipping could not be proccedded");
+			throw new Exception("shipping could not be done");
 		}
 	}
 

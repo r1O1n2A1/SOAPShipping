@@ -7,8 +7,9 @@ import fr.afcepf.atod.ws.soap.shipping.util.RESTUtil;
 public class ShippingTest {
 	private SoapShippingService service = new SoapShippingService();
 	
-	@Test
-	public void testNominal() {
+
+	@Test(expected = Exception.class)
+	public void testNominal() throws Exception {
 		service.orderShipping(null);
 	}	
 }
