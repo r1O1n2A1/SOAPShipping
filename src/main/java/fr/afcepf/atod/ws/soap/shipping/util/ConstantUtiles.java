@@ -18,7 +18,7 @@ public final class ConstantUtiles {
 	public static final String POINT_STR = ":";
 	public static final String RESPONSE_ID_COMMAND = "id: ";
 	public static final int NUMBER_ONE = 1;
-	public static final String CHAR_REDIRECT = "#/";
+	public static final String CHAR_REDIRECT = "#/wine/";
 	
 	private ConstantUtiles() {
 		// empty constructor
