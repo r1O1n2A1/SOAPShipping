@@ -33,7 +33,13 @@ public class SoapShippingService implements ISoapShippingService {
 
 	@Override
 	public String followOrderShipping(Map<String, String> detailsOrder) {
+		// empty add quartz V2
 		return null;
+	}
+
+	@Override
+	public boolean getIdShippingOrderFromApp(String idShipping) throws Exception {
+		return RESTUtil.isIdShippingFromShippinApp(idShipping);
 	}
 
 }

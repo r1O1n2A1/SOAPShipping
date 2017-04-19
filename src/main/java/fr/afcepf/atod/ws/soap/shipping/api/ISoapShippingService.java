@@ -16,4 +16,7 @@ public interface ISoapShippingService {
 	@WebMethod(operationName="followOrder")
 	@WebResult(name="statusShippingOrder")
 	String followOrderShipping(@WebParam(name="detailOrder")Map<String,String> detailsOrder);
+	@WebMethod(operationName="getIdShipping")
+	@WebResult(name="isExistingIdShipping")
+	boolean getIdShippingOrderFromApp(@WebParam(name = "idShipping")String idShipping) throws Exception;
 }

@@ -8,6 +8,7 @@ public final class ConstantUtiles {
 	public static final String URI_SHIPPING_SITE = "http://localhost:8080/";
 	public static final String URI_SHIPPING_SITE_FROM_WINE 
 		= "http://localhost:8080/wine/order/";
+	public static final String URI_SHIPPING = "shipping/";
 	public static final String WINDOWS = "win";
 	public static final String MAC = "mac";
 	public static final String LINUX = "nix";
@@ -19,6 +20,7 @@ public final class ConstantUtiles {
 	public static final String RESPONSE_ID_COMMAND = "id: ";
 	public static final int NUMBER_ONE = 1;
 	public static final String CHAR_REDIRECT = "#/wine/";
+	public static final String IS_SHIPPING = "has been found";
 	
 	private ConstantUtiles() {
 		// empty constructor

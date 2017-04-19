@@ -34,6 +34,8 @@ public final class  RESTUtil {
 
 	/**
 	 * CAN BE DONE WITH A PUT ?
+	 * Un lapin et un renard sont dans un terrier...
+	 * Le lapin a tres faim... tout comme le renard..
 	 * @param infos
 	 * @return
 	 */
@@ -74,6 +76,55 @@ public final class  RESTUtil {
 		}
 		return returnStatusShipping;
 
+	}
+	
+	/**
+	 * Check is a shipping id has been 
+	 * previously created
+	 * @param idShipping
+	 * @return
+	 */
+	public static boolean isIdShippingFromShippinApp(String idShipping) {
+		String returnStatusShipping = ConstantUtiles.EMPTY_STR;
+		CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+		String hashUrl = encodingUrlToShippingApp(idShipping);
+		HttpGet get = new HttpGet(ConstantUtiles.URI_SHIPPING_SITE_FROM_WINE + 
+				ConstantUtiles.URI_SHIPPING + hashUrl);
+		get.addHeader("content-type","application/json");
+		HttpResponse response;
+		try {
+			response = httpClient.execute(get);
+			if (response.getStatusLine().getStatusCode() < 200 
+					|| response.getStatusLine().getStatusCode() > 300) {
+				throw new RuntimeException("Failed : HTTP error code : "
+						+ response.getStatusLine().getStatusCode());
+			}
+			BufferedReader br = new BufferedReader(
+					new InputStreamReader((response.getEntity().getContent())));
+
+			String output;
+			logger.info("Output from Server .... \n");
+			while ((output = br.readLine()) != null) {
+				logger.info(output);
+				if(output.contains(idShipping + ConstantUtiles.SPACE_STR + 
+						ConstantUtiles.IS_SHIPPING)) {
+					returnStatusShipping = idShipping + ConstantUtiles.SPACE_STR + 
+							ConstantUtiles.IS_SHIPPING;
+				}
+			}
+			httpClient.close();
+			br.close();
+		} catch (UnsupportedEncodingException | ClientProtocolException e) {
+			logger.info(e);
+		} catch (IOException e) {
+			logger.error(e);
+		}		
+		if (returnStatusShipping.equalsIgnoreCase(idShipping 
+				+ ConstantUtiles.SPACE_STR 
+				+ ConstantUtiles.IS_SHIPPING)){
+			return true;
+		}
+		return false;
 	}
 
 	/**
