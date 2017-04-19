@@ -12,7 +12,7 @@ import fr.afcepf.atod.ws.soap.shipping.util.ConstantUtiles;
 import fr.afcepf.atod.ws.soap.shipping.util.RESTUtil;
 
 @WebService(targetNamespace="shipping.soap.ws.atod.afcepf.fr",
-		endpointInterface="fr.afcepf.atod.ws.soap.shipping.api.ISoapShippingService")
+endpointInterface="fr.afcepf.atod.ws.soap.shipping.api.ISoapShippingService")
 public class SoapShippingService implements ISoapShippingService {
 	private static Logger logger = Logger.getLogger(SoapShippingService.class);
 	@Override
@@ -39,7 +39,13 @@ public class SoapShippingService implements ISoapShippingService {
 
 	@Override
 	public boolean getIdShippingOrderFromApp(String idShipping) throws Exception {
-		return RESTUtil.isIdShippingFromShippinApp(idShipping);
+		try {
+			return RESTUtil.isIdShippingFromShippinApp(idShipping);
+		}
+		catch (Exception ex) {
+			logger.error(ex);
+			return false;
+		}
 	}
 
 }
