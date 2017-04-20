@@ -41,8 +41,7 @@ public class SoapShippingService implements ISoapShippingService {
 	public boolean getIdShippingOrderFromApp(String idShipping) throws Exception {
 		try {
 			return RESTUtil.isIdShippingFromShippinApp(idShipping);
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			logger.error(ex);
 			return false;
 		}
