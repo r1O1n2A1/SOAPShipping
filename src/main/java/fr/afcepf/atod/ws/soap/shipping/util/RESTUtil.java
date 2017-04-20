@@ -45,7 +45,6 @@ public final class  RESTUtil {
 		String paramsToStr = createStringFromOrderDetails(infos);
 		String hashUrl = encodingUrlToShippingApp(paramsToStr);
 		HttpGet get = new HttpGet(ConstantUtiles.URI_SHIPPING_SITE_FROM_WINE + hashUrl);
-
 		try {
 			get.addHeader("content-type","application/json");
 			HttpResponse response = httpClient.execute(get);
@@ -61,9 +60,8 @@ public final class  RESTUtil {
 			logger.info("Output from Server .... \n");
 			while ((output = br.readLine()) != null) {
 				logger.info(output);
-				if(output.contains(ConstantUtiles.RESPONSE_ID_COMMAND)) {
-					returnStatusShipping = output.split(",")[ConstantUtiles.NUMBER_ONE]
-							.split(ConstantUtiles.POINT_STR)[ConstantUtiles.NUMBER_ONE];
+				if(output.contains(ConstantUtiles.RESPONSE_ID_ADDRESS)) {
+					returnStatusShipping = output.split(", id:")[1];
 				}
 			}
 			httpClient.close();

@@ -16,7 +16,7 @@ endpointInterface="fr.afcepf.atod.ws.soap.shipping.api.ISoapShippingService")
 public class SoapShippingService implements ISoapShippingService {
 	private static Logger logger = Logger.getLogger(SoapShippingService.class);
 	@Override
-	public void orderShipping(Map<String, String> detailsOrder) throws Exception {
+	public String orderShipping(Map<String, String> detailsOrder) throws Exception {
 		String returnUrl = RESTUtil.postToShippingApp(detailsOrder);
 		if (!returnUrl.equalsIgnoreCase(ConstantUtiles.EMPTY_STR)) {
 			try {
@@ -29,6 +29,7 @@ public class SoapShippingService implements ISoapShippingService {
 		} else {
 			throw new Exception("shipping could not be done");
 		}
+		return returnUrl;
 	}
 
 	@Override

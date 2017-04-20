@@ -17,7 +17,7 @@ public final class ConstantUtiles {
 	public static final String DOLLAR_STR = "$";
 	public static final String SPACE_STR = " ";
 	public static final String POINT_STR = ":";
-	public static final String RESPONSE_ID_COMMAND = "id: ";
+	public static final String RESPONSE_ID_ADDRESS = "description:command correctly created, id: ";
 	public static final int NUMBER_ONE = 1;
 	public static final String CHAR_REDIRECT = "#/wine/";
 	public static final String IS_SHIPPING = "has been found";
