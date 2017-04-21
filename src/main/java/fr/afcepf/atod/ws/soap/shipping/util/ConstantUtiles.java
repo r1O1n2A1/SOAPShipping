@@ -5,9 +5,9 @@ import java.io.IOException;
 
 public final class ConstantUtiles {
 
-	public static final String URI_SHIPPING_SITE = "http://localhost:8080/";
+	public static final String URI_SHIPPING_SITE = "http://192.168.102.183:8080/";
 	public static final String URI_SHIPPING_SITE_FROM_WINE 
-		= "http://localhost:8080/wine/order/";
+		= "http://192.168.102.183:8080/wine/order/";
 	public static final String URI_SHIPPING = "shipping/";
 	public static final String WINDOWS = "win";
 	public static final String MAC = "mac";
